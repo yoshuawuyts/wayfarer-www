@@ -13,7 +13,7 @@
     "server-summary": "^5.0.0",
     "sheetify": "^3.3.1",
     "size-stream": "^1.0.1",
-    "wayfarer": "^6.0.3"
+    "wayfarer": "^6.1.0"
   },
   "devDependencies": {}
 }
