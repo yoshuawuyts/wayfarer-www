@@ -1,14 +1,15 @@
+const tk = require('inject-typekit-script-stream')
 const sheetify = require('sheetify/stream')
-const hyperstream = require('hyperstream')
+const vdom = require('virtual-dom-stream')
 const browserify = require('browserify')
 const match = require('pathname-match')
 const wayfarer = require('wayfarer')
+const hs = require('hyperstream')
 const bankai = require('bankai')
 const stream = require('stream')
-const path = require('path')
-const fs = require('fs')
 
 const router = wayfarer('/404')
+const client = require('client-main')
 
 module.exports = api
 
@@ -21,14 +22,9 @@ function api (req, res, ctx) {
 // html
 const html = bankai.html()
 router.on('/', function (params, req, res) {
-  return html(req, res).pipe(hyperstream({
-    body: { _appendHtml: readHtml('index.html') }
-  }))
-
-  function readHtml (file) {
-    const clientPath = path.dirname(require.resolve('client-main'))
-    return fs.createReadStream((path.join(clientPath, file)))
-  }
+  return html(req, res)
+    .pipe(tk({ kitId: 'ecw0lda' }))
+    .pipe(hs({ body: { _appendHtml: vdom(client()) } }))
 })
 
 // js
